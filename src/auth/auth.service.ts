@@ -6,7 +6,7 @@ import { PrismaClientKnownRequestError } from "@prisma/client/runtime";
 import { JwtService } from "@nestjs/jwt";
 import { ConfigService } from "@nestjs/config";
 
-@Injectable({})
+@Injectable()
 export class AuthService {
   constructor(private prisma: PrismaService, private jwt: JwtService, private config: ConfigService) { }
 
