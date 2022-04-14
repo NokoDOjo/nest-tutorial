@@ -43,10 +43,10 @@ describe('App e2e', () => {
           .spec()
           .post('/auth/signup')
           .withBody({
-            password: dto.password
+            password: dto.password,
           })
           .expectStatus(400);
-      })
+      });
       // password empty
       it('Should throw if password empty', () => {
         return pactum
@@ -59,10 +59,7 @@ describe('App e2e', () => {
       });
       // both empty
       it('Should throw if both empty', () => {
-        return pactum
-          .spec()
-          .post('/auth/signup')
-          .expectStatus(400);
+        return pactum.spec().post('/auth/signup').expectStatus(400);
       });
       it('Should signup', () => {
         return pactum
@@ -102,13 +99,23 @@ describe('App e2e', () => {
           .spec()
           .post('/auth/signin')
           .withBody(dto)
-          .expectStatus(200);
+          .expectStatus(200)
+          .stores('userAt', 'access_token');
       });
     });
   });
 
   describe('User', () => {
-    describe('Get me', () => {});
+    describe('Get me', () => {
+      it('Should get current user', () => {
+        return pactum
+        .spec()
+        .get('/users/me')
+        .withHeaders({ Authorization: `Bearer $S{userAt}`})
+        .expectStatus(200)
+        .inspect();
+      });
+    });
     describe('Edit user', () => {});
   });
 
